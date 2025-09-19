@@ -6,18 +6,11 @@ const mime = require('mime-types')
 const app = express()
 const port = process.env.PORT || 3000
 
-// Token dipisah biar aman
-const a = 'g'
-const b = 'h'
-const c = 'p'
-const to = '_at_11BRE4UDY0l0tFecYQ8Myt_DKFLBtGeIDPdwgIAwnCwRvYpFBwuU6qOaASYMXjIJ'
-const ken = 'kqS7YC2NJV4SyrvMJJ'
-const githubToken = `${a}${b}${c}${to}${ken}`;
-
+const githubToken = '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'
 const owner = 'maultzy'
 const repo = 'r'
 const branch = 'main'
-const domain = 'https://r-livid.vercel.app'
+const domain = 'https://r-livid.vercel.app/'
 
 app.use(fileUpload())
 app.use(express.static(__dirname))
