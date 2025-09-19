@@ -17,7 +17,7 @@ const githubToken = `${a}${b}${c}${to}${ken}`;
 const owner = 'maultzy'
 const repo = 'r'
 const branch = 'main'
-const domain = 'varcel.app'
+const domain = 'https://r-livid.vercel.app'
 
 app.use(fileUpload())
 app.use(express.static(__dirname))
