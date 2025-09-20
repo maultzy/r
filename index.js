@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
-app.post('/api/upload', (req, res) => {
+app.post('/upload', (req, res) => {
   const bb = busboy({ headers: req.headers })
   let fileBuffer = null
   let fileName = null
@@ -58,7 +58,7 @@ app.post('/api/upload', (req, res) => {
 
   bb.on('close', async () => {
     if (!fileBuffer) {
-      return res.status(400).json({ status: false, message: 'No file uploaded.' })
+      return res.status(400).send('Tidak ada file yang diupload.')
     }
 
     const filePath = `uploads/${fileName}`
@@ -81,14 +81,39 @@ app.post('/api/upload', (req, res) => {
       )
 
       const proxiedUrl = `${domain}/uploads/${fileName}`
-      res.json({
-        status: true,
-        message: 'Upload berhasil',
-        url: proxiedUrl
-      })
+      res.send(`
+        <!DOCTYPE html>
+        <html lang="en" class="dark">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+          <title>Upload Berhasil</title>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <style>
+            body { font-family: sans-serif; background: #0f172a; }
+            .glass {
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              backdrop-filter: blur(14px);
+            }
+          </style>
+        </head>
+        <body class="text-white flex justify-center items-center min-h-screen">
+          <div class="glass p-8 rounded-2xl shadow-2xl max-w-lg w-full text-center">
+            <h1 class="text-3xl font-bold text-green-400 mb-4">✅ Upload Berhasil</h1>
+            <p class="text-gray-300 mb-2">Link File:</p>
+            <a href="${proxiedUrl}" target="_blank" class="text-blue-400 underline break-all">${proxiedUrl}</a>
+            <div class="mt-6 flex justify-center gap-3">
+              <button onclick="navigator.clipboard.writeText('${proxiedUrl}').then(()=>alert('✅ URL berhasil disalin'))" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg font-semibold">Copy URL</button>
+              <a href="/" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg font-semibold">Back</a>
+            </div>
+          </div>
+        </body>
+        </html>
+      `)
     } catch (err) {
       console.error(err.response?.data || err.message)
-      res.status(500).json({ status: false, message: 'Gagal upload file.' })
+      res.status(500).send('Gagal upload file.')
     }
   })
 
