@@ -10,7 +10,7 @@ const githubToken = 'github_pat_11BRE4UDY0l0tFecYQ8Myt_DKFLBtGeIDPdwgIAwnCwRvYpF
 const owner = 'maultzy'
 const repo = 'r'
 const branch = 'main'
-const domain = 'https://r-livid.vercel.app/'
+const domain = 'https://r-livid.vercel.app'
 
 app.use(fileUpload())
 app.use(express.static(__dirname))
